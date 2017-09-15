@@ -6,9 +6,6 @@ all: http_proxy
 http_proxy:	$(OBJECTS)
 	gcc $(OBJECTS) $(LFLAGS) -o http_proxy
 
-raw:
-	g++ -o raw rawsocket.cpp
-
 .PHONY: clean
 clean:
 	rm $(OBJECTS) http_proxy
