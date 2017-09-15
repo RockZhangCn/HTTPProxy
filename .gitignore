@@ -3,3 +3,10 @@ cscope*
 tags
 http_proxy
 raw
+obj
+libs/
+main
+Main
+bin
+gen
+.svn
