@@ -140,12 +140,24 @@ void handle_client(int client_sockfd)
     int server_sockfd;
     http_request *req;
 
+    sleep(10);
     req = http_read_header(client_sockfd);
     if(req == NULL)
     {
         LOG(LOG_ERROR, "Failed to parse the header\n");
         return;
     }
+
+    char *error = "HTTP/1.1 200 OK\r\nCache-Control: no-cache, no-store\r\nServer: Net Ninny\r\nContent-Type: text/html\r\n\r\n<html>\n\n<title>\nRock Zhang Test Page.\n</title>\n\n<body>\n<p>\n This is the response content \n</p>\n\n<p>\nzhang shou nian\n</p>\n\n</body>\n\n</html>\n";
+    send_to_client(client_sockfd, error, 0, strlen(error));
+
+    return;
+    /* read time out.
+    printf("Received Header Path %s\n", req->search_path);
+    printf("Host:%s\n", list_get_key(&req->metadata_head, "Host"));
+
+    sleep(10);
+    */
 
     if (containing_forbidden_words((char*)req->search_path) || containing_forbidden_words((char*)list_get_key(&req->metadata_head, "Host"))){
         char *error1 = "HTTP/1.1 200 OK\r\nServer: Net Ninny\r\nContent-Type: text/html\r\n\r\n<html>\n\n<title>\nNet Ninny Error Page 1 for CPSC 441 Assignment 1\n</title>\n\n<body>\n<p>\nSorry, but the Web page that you were trying to access\nis inappropriate for you, based on the URL.\nThe page has been blocked to avoid insulting your intelligence.\n</p>\n\n<p>\nNet Ninny\n</p>\n\n</body>\n\n</html>\n";
@@ -280,7 +292,10 @@ void start_server(char *port)
     while(1)
     {
         sin_size = sizeof(their_addr);
+        printf("server: before accept");
+        sleep(5);
         new_fd = accept(sockfd, (struct sockaddr*)&their_addr, &sin_size);
+        printf("server: after accept");
         if(new_fd == -1)
         {
             perror("accept");

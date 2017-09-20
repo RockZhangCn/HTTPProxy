@@ -2,6 +2,7 @@ SOURCES := $(shell find . -name '*.c')
 OBJECTS := $(SOURCES:.c=.o)
 
 all: http_proxy 
+	./http_proxy
 
 http_proxy:	$(OBJECTS)
 	gcc $(OBJECTS) $(LFLAGS) -o http_proxy
@@ -9,3 +10,4 @@ http_proxy:	$(OBJECTS)
 .PHONY: clean
 clean:
 	rm $(OBJECTS) http_proxy
+	rm cscope* tags -rf
